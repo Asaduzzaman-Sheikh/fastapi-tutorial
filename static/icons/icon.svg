@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="FastAPI Blog">
+  <rect width="64" height="64" rx="14" fill="#527c9f"/>
+  <path d="M18 10h21l10 10v34H18a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4Z" fill="#fff"/>
+  <path d="M39 10v10h10" fill="#dce8ef"/>
+  <path d="M23 28h19M23 35h19M23 42h12" fill="none" stroke="#527c9f" stroke-linecap="round" stroke-width="3.5"/>
+  <path d="m44 35 7 3-8 14-6 2 1-6Z" fill="#f4a261"/>
+  <path d="m44 35 3-5 7 3-3 5Z" fill="#f6bd60"/>
+</svg>
