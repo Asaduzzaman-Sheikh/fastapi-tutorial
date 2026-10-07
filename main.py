@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from schemas import PostCreate, PostResponse
 
 
 # - Step 2 - Create an instance of the FastAPI class
@@ -14,9 +15,9 @@ app.mount("/static", StaticFiles(directory = "static"), name = "static")
 templates = Jinja2Templates(directory = 'templates')
 
 posts: list[dict] = [
-    {"id": 1, "title": "First Post", "author": "Asaduzzaman", "title": "First Post", "content": "This is the first post.", "Date": "2023-06-01"},
-    {"id": 2, "title": "Second Post", "author": "Alice Johnson", "title": "Second Post", "content": "This is the second post.", "Date": "2023-06-02"},
-    {"id": 3, "title": "Third Post", "author": "Bob Smith", "title": "Third Post", "content": "This is the third post.", "Date": "2023-06-03"}
+    {"id": 1, "title": "First Post", "author": "Asaduzzaman", "content": "This is the first post.", "Date": "2023-06-01"},
+    {"id": 2, "title": "Second Post", "author": "Alice Johnson", "content": "This is the second post.", "Date": "2023-06-02"},
+    {"id": 3, "title": "Third Post", "author": "Bob Smith", "content": "This is the third post.", "Date": "2023-06-03"}
 ]
 
 # - Step 3 - Define a route for the root endpoint 
@@ -37,12 +38,25 @@ def post_page(request: Request, post_id: int):
         detail=f'Post with ID {post_id} not found',
     )
 # - Step 4 - Define a route for a custom endpoint
-@app.get("/api/posts")
+@app.get("/api/posts", response_model = list[PostResponse])
 def get_posts():
     return posts
 
+@app.post("/api/posts", response_model = PostResponse, status_code = status.HTTP_201_CREATED)
+def create_post(post: PostCreate):
+    new_id = max(post.get('id') for post in posts) + 1 if posts else 1
+    new_post = {
+        "id": new_id, 
+        "title": post.title,
+        "author": post.author,
+        "content": post.content,
+        "Date": "2023-06-04"  # You can set the date dynamically if needed
+        
+    }
+    posts.append(new_post)
+    return new_post
 # Path parameter 
-@app.get("/api/posts/{post_id}")
+@app.get("/api/posts/{post_id}", response_model = PostResponse)
 def get_post(post_id: int):
     for post in posts:
         if post.get('id') == post_id:
